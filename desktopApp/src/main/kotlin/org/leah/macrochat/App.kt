@@ -1,10 +1,13 @@
 package org.leah.macrochat
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.Button
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.websocket.WebSockets
@@ -14,9 +17,7 @@ import io.ktor.http.Parameters
 import kotlinx.coroutines.*
 import kotlin.time.Clock
 import io.ktor.client.plugins.websocket.*
-import io.ktor.http.HttpMethod
 import io.ktor.websocket.Frame
-import io.ktor.websocket.readBytes
 import io.ktor.websocket.readText
 import kotlin.time.Duration.Companion.seconds
 
@@ -85,6 +86,12 @@ suspend fun postMessage(
 fun Chat(user: String, host: String) {
     var messages by remember { mutableStateOf("") }
     var message by remember { mutableStateOf("") }
+    val scroll = rememberScrollState()
+
+    LaunchedEffect(messages) {
+        scroll.animateScrollTo(scroll.maxValue)
+    }
+
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(host) {
@@ -104,10 +111,21 @@ fun Chat(user: String, host: String) {
 
     Column {
         Text("Connected to $host as $user")
-        Text(messages)
+
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.5F)
+                .verticalScroll(scroll),
+            text = messages
+        )
+
         TextField(
             value = message,
             onValueChange = { message = it },
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.8F)
         )
         Button(
             onClick = {
