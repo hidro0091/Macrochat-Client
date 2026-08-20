@@ -8,6 +8,8 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.Button
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.*
+import com.github.panpf.sketch.AsyncImage
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.websocket.WebSockets
@@ -19,6 +21,7 @@ import kotlin.time.Clock
 import io.ktor.client.plugins.websocket.*
 import io.ktor.websocket.Frame
 import io.ktor.websocket.readText
+import java.io.File
 import kotlin.time.Duration.Companion.seconds
 
 enum class Screen {
@@ -125,27 +128,40 @@ fun Chat(user: String, host: String) {
             text = messages
         )
 
-        TextField(
-            value = message,
-            onValueChange = { message = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.8F)
-        )
-        Button(
-            onClick = {
-                scope.launch {
-                    postMessage(
-                        host = host,
-                        username = user,
-                        message = message
-                    )
-
-                    message = ""
-                }
+        Row {
+            Column {
+                TextField(
+                    value = message,
+                    onValueChange = { message = it },
+                    modifier = Modifier
+                        .fillMaxWidth(0.7F)
+                        .fillMaxHeight()
+                        .onKeyEvent { keyEvent ->
+                            if (keyEvent.key == Key.Enter && keyEvent.type == KeyEventType.KeyUp && !keyEvent.isShiftPressed) {
+                                if (message.trim().isNotEmpty()) {
+                                    scope.launch {
+                                        val newMsg = message.trim()
+                                        message = ""
+                                        postMessage(
+                                            host = host,
+                                            username = user,
+                                            message = newMsg
+                                        )
+                                    }
+                                } else {
+                                    message = ""
+                                }
+                            }
+                            false
+                        }
+                )
             }
-        ) {
-            Text("Send")
+            val projectRootPath: String = System.getProperty("user.dir")
+            val dancingMan = File(projectRootPath, "src/resources/dancingman.gif")
+            AsyncImage(
+                uri = dancingMan.toURI().toString().replace("file:/", "/"),
+                contentDescription = null
+            )
         }
     }
 }

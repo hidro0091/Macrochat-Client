@@ -18,6 +18,8 @@ dependencies {
     implementation("io.ktor:ktor-client-core:3.5.0")
     implementation("io.ktor:ktor-client-cio:3.5.0")
     implementation("io.ktor:ktor-client-websockets:3.5.0")
+    implementation("io.github.panpf.sketch4:sketch-compose:4.6.0")
+    implementation("io.github.panpf.sketch4:sketch-animated-gif:4.6.0")
 }
 compose.desktop {
     application {
