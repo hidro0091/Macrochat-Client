@@ -82,6 +82,10 @@ suspend fun postMessage(
     }
 }
 
+fun isHttps(url: String): Boolean {
+    return url.startsWith("https://")
+}
+
 @Composable
 fun Chat(user: String, host: String) {
     var messages by remember { mutableStateOf("") }
@@ -93,11 +97,12 @@ fun Chat(user: String, host: String) {
     }
 
     val scope = rememberCoroutineScope()
+    val url = "${if (isHttps(host)) "wss" else "ws"}://${host.removePrefix("https://").removePrefix("http://")}/chat"
 
     LaunchedEffect(host) {
         launch {
             client.webSocket(
-                urlString = "wss://${host.removePrefix("https://".removePrefix("http://"))}/chat",
+                urlString = url,
             ) {
                 while (true) {
                     val frame = incoming.receive()
