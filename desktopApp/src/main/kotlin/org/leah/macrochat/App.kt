@@ -1,27 +1,27 @@
 package org.leah.macrochat
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.Button
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.*
 import com.github.panpf.sketch.AsyncImage
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
-import io.ktor.client.plugins.websocket.WebSockets
-import io.ktor.client.request.*
-import io.ktor.client.request.forms.FormDataContent
-import io.ktor.http.Parameters
-import kotlinx.coroutines.*
-import kotlin.time.Clock
 import io.ktor.client.plugins.websocket.*
-import io.ktor.websocket.Frame
-import io.ktor.websocket.readText
-import java.io.File
+import io.ktor.client.request.*
+import io.ktor.client.request.forms.*
+import io.ktor.http.*
+import io.ktor.websocket.*
+import kotlinx.coroutines.launch
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.seconds
 
 enum class Screen {
@@ -156,10 +156,11 @@ fun Chat(user: String, host: String) {
                         }
                 )
             }
-            val projectRootPath: String = System.getProperty("user.dir")
-            val dancingMan = File(projectRootPath, "src/resources/dancingman.gif")
+            val dancingMan =
+                "file:///compose_resource/composeResources/org.leah.macrochat.resources/files/dancingman.gif"
+
             AsyncImage(
-                uri = dancingMan.toURI().toString().replace("file:/", "/"),
+                uri = dancingMan,
                 contentDescription = null
             )
         }
