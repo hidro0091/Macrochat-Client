@@ -12,12 +12,12 @@ repositories {
 }
 
 javafx {
-    version = "26.0.2"
+    version = "23.0.2"
     modules("javafx.controls")
 }
 
 kotlin {
-    jvmToolchain(26)
+    jvmToolchain(21)
 }
 
 dependencies {
@@ -32,4 +32,10 @@ tasks.test {
 
 application {
     mainClass.set("org.leah.macrochatNaCl.MainKt")
+}
+
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "org.leah.macrochatNaCl.MainKt"
+    }
 }
