@@ -37,7 +37,7 @@ import kotlin.time.Duration.Companion.seconds
 
 const val WIDTH = 800.0
 const val HEIGHT = 600.0
-const val CURRENT_VERSION = "v2.1.0"
+const val CURRENT_VERSION = "2.1.0"
 
 val client = HttpClient(CIO) {
     install(WebSockets) {
