@@ -1,0 +1,17 @@
+.root {
+    -fx-base: #303030;
+    -fx-background: #303030;
+    -fx-control-inner-background: #404040;
+    -fx-control-inner-bakcground-alt: #454545;
+    -fx-text-fill: #eeeeee;
+}
+
+.label {
+    -fx-text-fill: #eeeeee;
+}
+
+.text-field,
+.text-area {
+    -fx-text-fill: #eeeeee;
+    -fx-prompt-text-fill: #999999;
+}

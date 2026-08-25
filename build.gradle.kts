@@ -1,11 +1,12 @@
 plugins {
     application
     kotlin("jvm") version "2.4.10"
+    kotlin("plugin.serialization") version "2.4.10"
     id("org.openjfx.javafxplugin") version "0.1.0"
 }
 
 group = "org.leah"
-version = "2.0.0"
+version = providers.gradleProperty("appVersion").get()
 
 repositories {
     mavenCentral()
@@ -24,6 +25,8 @@ dependencies {
     implementation("io.ktor:ktor-client-core:3.5.0")
     implementation("io.ktor:ktor-client-cio:3.5.0")
     implementation("io.ktor:ktor-client-websockets:3.5.0")
+    implementation("io.ktor:ktor-client-content-negotiation:3.3.0")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:3.3.0")
 }
 
 tasks.test {
